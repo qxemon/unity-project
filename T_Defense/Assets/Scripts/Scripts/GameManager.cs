@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     private GameObject[] obj;
 
     public int myGold = 0;
+    public GameObject TowerPrefab;
 
     // UI Text Variable
     Text UItext;
@@ -60,12 +61,25 @@ public class GameManager : MonoBehaviour
     public void GetGold(GameObject obj) {
         myGold++;
         Debug.Log("Gold : " + myGold.ToString());
-        Destroy(obj);
+        obj.GetComponent<Coin>().Collect();
     }
     // 웨이브 시작함수
-    public void WaveStart() {
+    public void WaveStart(GameObject obj) {
+        Debug.Log("TEST : ");
+        // Data Chaning by wave
         float[] data = new float[3]{1, 2, 5};
         GameObject.Find("Gate").SendMessage("WaveStart", data);
+        Destroy(obj);
     }
-
+    // 타워 생성
+    public void CreateTower(GameObject obj) {
+        if (myGold >= 5) {
+            myGold -= 5;
+            Instantiate(TowerPrefab, obj.transform.position, obj.transform.rotation);
+            Destroy(obj);
+        }
+        else {
+            Debug.Log("Message : not enough Gold");
+        }
+    }
 }
