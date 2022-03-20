@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour
     public int myGold = 0;
     public GameObject TowerPrefab;
 
+    public int PlayRound;
+    public int nowRound = 0;
     // UI Text Variable
     Text UItext;
     private void Awake()
@@ -38,7 +40,6 @@ public class GameManager : MonoBehaviour
         gState = GameState.Play;
         Debug.Log("Starting");
         this.veiling();
-
         // 게임종료상태 설정
 
     }
@@ -46,6 +47,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        int Hp = GameObject.Find("Castle").GetComponent<TowerHP>().CastleHp;
+        GameObject.Find("hpOfCastle").GetComponent<Text>().text = "Castle HP : " + Hp.ToString();
         
     }
     private void veiling()
@@ -60,6 +63,7 @@ public class GameManager : MonoBehaviour
     // 골드 획득량 증가 함수
     public void GetGold(GameObject obj) {
         myGold++;
+        nowGold();
         Debug.Log("Gold : " + myGold.ToString());
         obj.GetComponent<Coin>().Collect();
     }
@@ -67,6 +71,8 @@ public class GameManager : MonoBehaviour
     public void WaveStart(GameObject obj) {
         Debug.Log("TEST : ");
         // Data Chaning by wave
+        nowRound++;
+        this.NowRound();
         float[] data = new float[3]{1, 2, 5};
         GameObject.Find("Gate").SendMessage("WaveStart", data);
         Destroy(obj);
@@ -81,5 +87,15 @@ public class GameManager : MonoBehaviour
         else {
             Debug.Log("Message : not enough Gold");
         }
+    }
+
+    // Round 텍스트 변경
+    public void NowRound() {
+        string s = "현재 라운드 : " + nowRound.ToString() + "/" + "임시 총라운드";
+        GameObject.Find("Round").GetComponent<Text>().text = s;
+    }
+    public void nowGold() {
+        string s = "Gold : " + myGold.ToString();
+        GameObject.Find("Gold").GetComponent<Text>().text = s;
     }
 }
