@@ -11,6 +11,7 @@ public class TowerHP : MonoBehaviour {
     public void Dmg_2(int DMG_2count)
     {
         CastleHp -= DMG_2count;
+        GameObject.Find("GameManager").GetComponent<GameManager>().SendMessage("HP", CastleHp);
     }
 
     private void Update()

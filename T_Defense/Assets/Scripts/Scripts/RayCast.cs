@@ -31,7 +31,7 @@ public class RayCast : MonoBehaviour
 
                 // 타워 생성 버튼 (TowerBase를 누를경우)
                 if (obj.CompareTag("TowerBase")) {
-                    GameObject instance = Instantiate(TowerPrefab, obj.transform.position, obj.transform.rotation);
+                    GameObject.Find("GameManager").SendMessage("CreateTower", obj);
                 }
                 // Coin 클릭시 Gold 상승
                 if (obj.CompareTag("Coin")) {
@@ -39,9 +39,8 @@ public class RayCast : MonoBehaviour
                 }
                 // wave 시작버튼
                 if (obj.CompareTag("WaveStart")) {
-                    GameObject.Find("GameManager").SendMessage("WaveStart");
+                    GameObject.Find("GameManager").SendMessage("WaveStart", obj);
                 }
-                Destroy(obj);
             }
         }
     }
