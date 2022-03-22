@@ -6,7 +6,16 @@ using UnityEngine.UI;
 public class GameManager : MonoBehaviour
 {
     // Singleton
-    public static GameManager gm;
+    private static GameManager instance;
+    public static GameManager Instance
+    {
+        get
+        {
+            if (instance == null)
+                instance = FindObjectOfType<GameManager>();
+            return instance;
+        }
+    }
     private GameObject[] obj;
 
     #region 각종 필요 속성 선언
@@ -18,11 +27,7 @@ public class GameManager : MonoBehaviour
     #endregion
     // UI Text Variable
     Text UItext;
-    private void Awake()
-    {
-        if (gm == null)
-            gm = this;
-    }
+
     // 게임상태 상수
     public enum GameState
     {

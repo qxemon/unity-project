@@ -9,6 +9,7 @@ public class RayCast : MonoBehaviour
     public Ray ray;
     public RaycastHit hit;
     public GameObject TowerPrefab;
+    private GameManager gm => GameManager.Instance;
 
     // Start is called before the first frame update
     void Start()
@@ -31,15 +32,15 @@ public class RayCast : MonoBehaviour
 
                 // 타워 생성 버튼 (TowerBase를 누를경우)
                 if (obj.CompareTag("TowerBase")) {
-                    GameObject.Find("GameManager").SendMessage("CreateTower", obj);
+                    gm.CreateTower(obj);
                 }
                 // Coin 클릭시 Gold 상승
                 if (obj.CompareTag("Coin")) {
-                    GameObject.Find("GameManager").SendMessage("GetGold", obj);
+                    gm.GetGold(obj);
                 }
                 // wave 시작버튼
                 if (obj.CompareTag("WaveStart")) {
-                    GameObject.Find("GameManager").SendMessage("WaveStart", obj);
+                    gm.WaveStart(obj);
                 }
             }
         }
