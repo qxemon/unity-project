@@ -1083,7 +1083,8 @@ MonoBehaviour:
   Enemy_Hp: {fileID: 0}
   target: {fileID: 0}
   EnemyTarget: {fileID: 0}
-  Coin: {fileID: 7103859740454732784, guid: 4eca7a8ef879cfb41b294a8c0d69ea58, type: 3}
+  CoinPrefab: {fileID: 1845364607889832886, guid: 4eca7a8ef879cfb41b294a8c0d69ea58,
+    type: 3}
 --- !u!135 &2035851403391290149
 SphereCollider:
   m_ObjectHideFlags: 0

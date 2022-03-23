@@ -16,7 +16,9 @@ public class Enemy : MonoBehaviour {
     public EnemyHp Enemy_Hp;
     public Transform target;
     public GameObject EnemyTarget;
+    public GameObject CoinPrefab;
         
+    private bool isCoin = true;
 
     void Start()
     {            
@@ -99,7 +101,14 @@ public class Enemy : MonoBehaviour {
             Speed = 0;
             Destroy(gameObject, 0.5f);
             anim.SetBool("Death", true);
-             
+
+            // Coin을 한번만 생성
+            if (isCoin){
+                Vector3 v = gameObject.transform.position;
+                v.y += (float)0.5;
+                Instantiate(CoinPrefab, v, gameObject.transform.rotation); 
+                isCoin = false;
+            }            
         }
 
         // Attack to Run
