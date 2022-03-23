@@ -12,7 +12,7 @@ public class TowerBullet : MonoBehaviour {
     public Tower twr;    
     float i = 0.05f; // delay time of bullet destruction
 
-    public GameObject Coin;
+    // public GameObject Coin;
 
     
     void Update() {
@@ -29,25 +29,22 @@ public class TowerBullet : MonoBehaviour {
         }
 
         // Move bullet ( enemy was disapeared )
+        else          
+        {              
+            transform.position = Vector3.MoveTowards(transform.position, lastBulletPosition, Time.deltaTime * Speed); 
 
-        else          {
-                        
-                transform.position = Vector3.MoveTowards(transform.position, lastBulletPosition, Time.deltaTime * Speed); 
-
-                if (transform.position == lastBulletPosition) 
-                {
-                    Destroy(gameObject,i);
+            if (transform.position == lastBulletPosition) 
+            {
+                Destroy(gameObject,i);
 
                 // Bullet hit ( enemy was disapeared )
-
                 if (impactParticle != null) 
                 {
                     impactParticle = Instantiate(impactParticle, transform.position, Quaternion.FromToRotation(Vector3.up, impactNormal)) as GameObject;  // Tower`s hit
                     Destroy(impactParticle, 3);
                     return;
                 }
-
-                 }           
+            }           
         }     
     }
 
@@ -58,11 +55,6 @@ public class TowerBullet : MonoBehaviour {
         if(other.gameObject.transform == target)
         {
             target.GetComponent<EnemyHp>().Dmg(twr.dmg); 
-            if (target.GetComponent<EnemyHp>().EnemyHP <= 0) {
-                GameObject instance = Instantiate(Coin
-                                                  , target.GetComponent<Transform>().position
-                                                  , target.GetComponent<Transform>().rotation);   
-            }
             Destroy(gameObject, i); // destroy bullet
             impactParticle = Instantiate(impactParticle, target.transform.position, Quaternion.FromToRotation(Vector3.up, impactNormal)) as GameObject;
             impactParticle.transform.parent = target.transform;

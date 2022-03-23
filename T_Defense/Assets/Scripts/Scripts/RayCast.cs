@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,7 +27,7 @@ public class RayCast : MonoBehaviour
             LayerMask mask = LayerMask.GetMask("BaseTower") | LayerMask.GetMask("Coin") | LayerMask.GetMask("Wave");
             if (Physics.Raycast(ray, out hit, 100.0f, mask))
             {
-                Debug.Log("Click : " + hit.collider.gameObject.name);
+                // Debug.Log("Click : " + hit.collider.gameObject.name);
                 GameObject obj = hit.transform.gameObject;
 
                 // 타워 생성 버튼 (TowerBase를 누를경우)
@@ -47,7 +47,6 @@ public class RayCast : MonoBehaviour
                 }
                 // Tower Click
                 if (obj.CompareTag("Tower")) {
-                    Debug.Log("Tower");
                     gm.Targeting(obj);
                 }
                 

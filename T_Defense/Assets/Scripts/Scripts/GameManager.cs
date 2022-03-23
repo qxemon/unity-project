@@ -24,9 +24,13 @@ public class GameManager : MonoBehaviour
     public GameObject TowerPrefab;
     public GameObject RoundButton;
     public GameObject TargetPrefab;
+    public GameObject TBPrefab;
     public int PlayRound;
     public int nowRound = 0;
+
     private GameObject isTarget = null;
+    private GameObject isSelected = null;
+    private GameObject SelectedObject = null;
     #endregion
     // UI Text Variable
     Text UItext;
@@ -53,7 +57,6 @@ public class GameManager : MonoBehaviour
         int Hp = GameObject.Find("Castle").GetComponent<TowerHP>().CastleHp;
         GameObject.Find("hpOfCastle").GetComponent<Text>().text = "Castle HP : " + Hp.ToString();
         // 게임종료상태 설정
-
     }
 
     // Update is called once per frame
@@ -64,7 +67,7 @@ public class GameManager : MonoBehaviour
     }
     #region 각종 기능 함수
 
-    #region target 초기화
+    #region Setting Monster Walking Route
     private void veiling()
     {
         obj = GameObject.FindGameObjectsWithTag("Target");
@@ -81,7 +84,6 @@ public class GameManager : MonoBehaviour
     public void GetGold(GameObject obj) {
         myGold++;
         nowGold();
-        Debug.Log("Gold : " + myGold.ToString());
         obj.GetComponent<Coin>().Collect();
     }
     #endregion
@@ -89,7 +91,6 @@ public class GameManager : MonoBehaviour
     #region 웨이브 시작함수
     // 웨이브 시작함수
     public void WaveStart(GameObject obj) {
-        Debug.Log("TEST : ");
         // Data Chaning by wave
         nowRound++;
         this.NowRound();
@@ -101,38 +102,60 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
-    #region 타워생성
+    #region Tower Control
     // 타워 생성
     public void CreateTower(GameObject obj) {
         if (myGold >= 5) {
             myGold -= 5;
+            nowGold();
             Instantiate(TowerPrefab, obj.transform.position, Quaternion.Euler(0f, 0f, 0f));
             Destroy(obj);
         }
         else {
-            Debug.Log("Message : not enough Gold");
+            // Debug.Log("Message : not enough Gold");
         }
     }
-    #endregion
-    
-    #region Targeting
     public void Targeting(GameObject obj) {
         if (isTarget == null) {
             isTarget = Instantiate(TargetPrefab, obj.transform.position, Quaternion.Euler(90f, 0f, 0f));
         }
         else {
             Destroy(isTarget);
-            isTarget = Instantiate(TargetPrefab, obj.transform.position, Quaternion.Euler(90f, 0f, 0f));
+            isTarget = Instantiate(TargetPrefab, obj.transform.position, Quaternion.Euler(90f, 0f, 0f));  
         }
+        Selected(obj);
     }
     public void NoneTargeting() {
-        isTarget.SetActive(false);
         Destroy(isTarget);
         isTarget = null;
+        if (isSelected)
+            Destroy(isSelected);
+        isSelected = null;
+        SelectedObject = null;
+    }
+    private void Selected(GameObject obj) {
+        if (isSelected != null) {
+            Destroy(isSelected);
+        }
+        GameObject temp = GameObject.Find("Position_Clicked");
+        isSelected = Instantiate(TowerPrefab, temp.transform.position, Quaternion.Euler(0f, 90f, 0f));
+        SelectedObject = obj;
+
+        // Todo
+        // obj의 Status를 보여주는 텍스트 갱신
+        // Text Object 추가해야함
+    }
+
+    public void CreateTB(GameObject obj) {
+        Instantiate(TBPrefab, obj.transform.position, TBPrefab.transform.rotation);
+    }
+
+    public GameObject Selected() {
+        return SelectedObject;
     }
     #endregion
 
-    #region 시작버튼 생성
+    #region Wave Button
     // 시작버튼 생성
     public void WaveStartButton() {
         GameObject.Find("Gate").GetComponent<WaveSpawn>().SendMessage("CreateButton");
