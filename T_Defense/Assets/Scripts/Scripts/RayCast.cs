@@ -33,15 +33,24 @@ public class RayCast : MonoBehaviour
                 // 타워 생성 버튼 (TowerBase를 누를경우)
                 if (obj.CompareTag("TowerBase")) {
                     gm.CreateTower(obj);
+                    gm.NoneTargeting();
                 }
                 // Coin 클릭시 Gold 상승
                 if (obj.CompareTag("Coin")) {
                     gm.GetGold(obj);
+                    gm.NoneTargeting();
                 }
                 // wave 시작버튼
                 if (obj.CompareTag("WaveStart")) {
                     gm.WaveStart(obj);
+                    gm.NoneTargeting();
                 }
+                // Tower Click
+                if (obj.CompareTag("Tower")) {
+                    Debug.Log("Tower");
+                    gm.Targeting(obj);
+                }
+                
             }
         }
     }

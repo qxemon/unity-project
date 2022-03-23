@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-    // Singleton
+    #region Singleton
     private static GameManager instance;
     public static GameManager Instance
     {
@@ -16,14 +16,17 @@ public class GameManager : MonoBehaviour
             return instance;
         }
     }
+    #endregion
     private GameObject[] obj;
 
     #region 각종 필요 속성 선언
     public int myGold = 0;
     public GameObject TowerPrefab;
     public GameObject RoundButton;
+    public GameObject TargetPrefab;
     public int PlayRound;
     public int nowRound = 0;
+    private GameObject isTarget = null;
     #endregion
     // UI Text Variable
     Text UItext;
@@ -103,7 +106,7 @@ public class GameManager : MonoBehaviour
     public void CreateTower(GameObject obj) {
         if (myGold >= 5) {
             myGold -= 5;
-            Instantiate(TowerPrefab, obj.transform.position, obj.transform.rotation);
+            Instantiate(TowerPrefab, obj.transform.position, Quaternion.Euler(0f, 0f, 0f));
             Destroy(obj);
         }
         else {
@@ -112,6 +115,23 @@ public class GameManager : MonoBehaviour
     }
     #endregion
     
+    #region Targeting
+    public void Targeting(GameObject obj) {
+        if (isTarget == null) {
+            isTarget = Instantiate(TargetPrefab, obj.transform.position, Quaternion.Euler(90f, 0f, 0f));
+        }
+        else {
+            Destroy(isTarget);
+            isTarget = Instantiate(TargetPrefab, obj.transform.position, Quaternion.Euler(90f, 0f, 0f));
+        }
+    }
+    public void NoneTargeting() {
+        isTarget.SetActive(false);
+        Destroy(isTarget);
+        isTarget = null;
+    }
+    #endregion
+
     #region 시작버튼 생성
     // 시작버튼 생성
     public void WaveStartButton() {
