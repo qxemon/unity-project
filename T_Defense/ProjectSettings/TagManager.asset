@@ -10,6 +10,7 @@ TagManager:
   - TowerBase
   - Coin
   - WaveStart
+  - Tower
   layers:
   - Default
   - TransparentFX
