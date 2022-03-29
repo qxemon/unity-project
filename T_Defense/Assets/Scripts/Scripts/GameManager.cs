@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
     private GameObject isTarget = null;
     private GameObject isSelected = null;
     private GameObject SelectedObject = null;
+    private Text status;
     #endregion
     // UI Text Variable
     Text UItext;
@@ -49,7 +50,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // 게임 초기상태 준비 상태 설정
-
+        status = GameObject.Find("Status").GetComponent<Text>();
         // 게임 실행상태 설정
         gState = GameState.Play;
         Debug.Log("Starting");
@@ -132,18 +133,18 @@ public class GameManager : MonoBehaviour
             Destroy(isSelected);
         isSelected = null;
         SelectedObject = null;
+        SetStatus();
     }
     private void Selected(GameObject obj) {
         if (isSelected != null) {
             Destroy(isSelected);
         }
         GameObject temp = GameObject.Find("Position_Clicked");
-        isSelected = Instantiate(TowerPrefab, temp.transform.position, Quaternion.Euler(0f, 90f, 0f));
+        isSelected = Instantiate(TowerPrefab, temp.transform.position, Quaternion.Euler(0f, 0f, 0f));
         SelectedObject = obj;
 
         // Todo
-        // obj의 Status를 보여주는 텍스트 갱신
-        // Text Object 추가해야함
+        Status();
     }
 
     public void CreateTB(GameObject obj) {
@@ -152,6 +153,16 @@ public class GameManager : MonoBehaviour
 
     public GameObject Selected() {
         return SelectedObject;
+    }
+
+    public void Status() {
+        string can = "남은 강화 횟수 : " + (10 - SelectedObject.GetComponent<Tower>().nowUp).ToString();
+        string d = "Damage : " + SelectedObject.GetComponent<Tower>().dmg.ToString();
+        string s = "ShotSpeed : " + SelectedObject.GetComponent<Tower>().shootDelay.ToString();
+        status.text = can + "\n" + d + "\n" + s;
+    }
+    public void SetStatus() {
+        status.text = "";
     }
     #endregion
 
